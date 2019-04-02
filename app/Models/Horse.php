@@ -11,7 +11,7 @@ class Horse extends Model
     
     protected $fillable = ['name', 'speed', 'strength', 'endurance'];
     
-    public function race() {
+    public function races() {
         return $this->belongsToMany(\App\Models\Race::class, 'horse_races', 'horse_id', 'race_id');
     }
     
