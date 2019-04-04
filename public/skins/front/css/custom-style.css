@@ -1,0 +1,174 @@
+/*/////////////////////////////////////////////////////////////////////
+ // 
+ // Custom theme code styles
+ // Written by Themelize.me (http://themelize.me)
+ // 
+ // This is an empty starter template for overriding styles
+ // set by Bootstrap & the theme
+ // 
+ // ----------------------------------------------------
+ // 
+ // Remove unused code for better performances
+ // 
+ // ----------------------------------------------------
+ // 
+ // @see - Usefuls tools online for editing
+ // 1. http://charliepark.org/bootstrap_buttons/ - Button style generator
+ // 2. http://www.colorzilla.com/gradient-editor/ - CSS3 gradient maker
+ // 
+ // @note
+ // To ensure custom styles are picked up
+ // wrap definitions in body tag
+ // ie.
+ // body .navbar-inner {
+ //   background: #ff0000;
+ // }
+ // 
+ /////////////////////////////////////////////////////////////////////*/
+/*
+ * --------------------------------------------------
+ * 1. General Elements
+ *--------------------------------------------------
+ */
+#navigation {
+  /* 1. Navigation wrapper */
+}
+#highlighted {
+  /* 2. Highlighted (below header) wrapper */
+}
+#content {
+  /* 3. Content wrapper */
+}
+#content-below {
+  /* 4. Content Below wrapper */
+}
+#footer {
+  /* 5. Footer wrapper */
+  min-height: 40px;
+}
+
+#footer .social-media {
+	text-align: right;
+}
+
+#footer .social-media a {
+	display: inline-block;
+	margin-right: 0.7em;
+}
+
+table .actions {
+	width: 150px;
+}
+
+.last-race {
+    margin-bottom: 20px;
+}
+
+.race table, 
+.last-race table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.race table th, 
+.race table td,
+.last-race table th, 
+.last-race table td {
+    border-bottom: 1px solid gray;
+}
+
+.race table td,
+.last-race table td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.race table .horse-id,
+.last-race table .horse-id {
+    width: 30px;
+}
+
+.race table .horse-name, 
+.race table .horse-dist, 
+.race table .horse-time,
+.last-race table .horse-name, 
+.last-race table .horse-dist, 
+.last-race table .horse-time {
+    width: 100px;
+    text-align: left;
+}
+
+.myProgress {
+    width: 100%;
+    background-color: #ddd;
+}
+
+.myBar {
+    width: 0%;
+    height: 30px;
+}
+
+.myBar1 {
+    background-color: green;
+}
+
+.myBar2 {
+    background-color: blue;
+}
+
+.myBar3 {
+    background-color: orange;
+}
+
+.myBar4 {
+    background-color: red;
+}
+
+.myBar5 {
+    background-color: pink;
+}
+
+.myBar6 {
+    background-color: violet;
+}
+
+.myBar7 {
+    background-color: darkred;
+}
+
+.myBar8 {
+    background-color: aqua;
+}
+
+#best-result-container {
+    font-size: 18px;
+}
+
+/*
+ * --------------------------------------------------
+ * 2. Colours
+ *-------------------------------------------------- 
+ */
+/*
+ * --------------------------------------------------
+ * 3. Responsiveness/media queries
+ *--------------------------------------------------
+ */
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+@media (min-width: 768px) {
+  /* Small devices (tablets, 768px and up) */
+}
+@media (min-width: 992px) {
+  /* Medium devices (desktops, 992px and up) */
+}
+@media (min-width: 1200px) {
+  /* Large devices (large desktops, 1200px and up) */
+}
+/* Navbar collapse */
+/*
+ * --------------------------------------------------
+ * 4. Misc
+ * Other stuff
+ *--------------------------------------------------
+ */

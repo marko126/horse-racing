@@ -11,13 +11,21 @@ use \App\Models\Horse;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index');
 /*
 Route::get('horses', function() {
     return Horse::all();
 });*/
+
+Route::post('/race/create', 'RaceController@create')->name('front.race.create');
+
+Route::get('/race/getactiveraces', 'RaceController@getActiveRaces')->name('front.race.getactiveraces');
+
+Route::get('/race/getactiveraceshtml', 'RaceController@getActiveRacesHtml')->name('front.race.getactiveraceshtml');
+
+Route::get('/race/getlastresultshtml', 'RaceController@getLastResultsHtml')->name('front.race.getlastresultshtml');
+
+Route::get('/race/getbestresulthtml', 'RaceController@getBestResultHtml')->name('front.race.getbestresulthtml');
 
 Auth::routes();
 

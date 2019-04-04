@@ -82,10 +82,31 @@ class Horse extends Model
         return (($length - $this->attributes['endurance'] * 100) / $this->getReducedSpeed());
     }
     
+    /**
+     * @param int $length
+     * @return float
+     */
     public function getTime(int $length = 1500) {
         
         $totalTime = $this->getMaxSpeedTime() + $this->getReducedSpeedTime($length);
         
         return $totalTime;
+    }
+    
+    /**
+     * @param float $time
+     * @param float $length
+     * @return boolean|float
+     */
+    public function getCurrentLength(float $time, float $length) {
+        if ($time > $this->getTime()) {
+            return $length;
+        }
+        if ($time <= $this->getMaxSpeedTime()) {
+            return $time * $this->getMaxSpeed();
+        }
+        else {
+            return $this->attributes['endurance'] * 100 + ($time - $this->getMaxSpeedTime()) * $this->getReducedSpeed(); 
+        }
     }
 }

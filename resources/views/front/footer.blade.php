@@ -4,7 +4,7 @@
 					<!--@todo: replace with company copyright details-->
 					<div class="subfooter">
 						<div class="col-md-5">
-							<p><a href="http://school.cubes.rs/">Cubes School</a> | Copyright 2017 &copy;</p>
+							<p><a href="https://www.innogames.com/">InnoGames</a> | Copyright 2019 &copy;</p>
 						</div>
 						<div class="col-md-7 col social-media">
 							<!--@todo: replace with company social media details-->
