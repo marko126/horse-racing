@@ -43,33 +43,38 @@
 <script src="/public/skins/front/js/script.js"></script>
 <script type="text/javascript">
     
-    $('#start-race').on('click', function(e){
-        e.preventDefault();
-        
-        $.ajax({
-            type: "POST",
-            url: "{{route('front.race.create')}}",
-            data: {},
-            headers: {'X-CSRF-TOKEN': $('input[name=_token]').val()},
-            processData: false,
-            success: function(data) {
-                getActiveRaces();
-                run();
-            },
-            error: function() {
-                alert(1);
-            }
-        });
-    });
+    var app = {
+        activeRaces: {}
+    };
     
-    function getActiveRaces() {
+    app.bindEvents = function() {
+        $('#start-race').on('click', function(e){
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: "{{route('front.race.create')}}",
+                data: {},
+                headers: {'X-CSRF-TOKEN': $('input[name=_token]').val()},
+                processData: false,
+                success: function(data) {
+                    app.getActiveRaces();
+                    app.run();
+                },
+                error: function() {
+                    alert(1);
+                }
+            });
+        });
+    }
+    
+    app.getActiveRaces = function() {
         $.ajax({
             type: "GET",
             url: "{{route('front.race.getactiveraceshtml')}}",
             processData: false,
             success: function(data) {
                 $('#race-container').html(data);
-                run();
+                app.run();
             },
             error: function() {
                 alert(1);
@@ -77,18 +82,17 @@
         });
     }
     
-    function run() {
-    
+    app.run = function() {
         $.ajax({
             type: "GET",
             url: "{{route('front.race.getactiveraces')}}",
             processData: false,
             success: function(data) {
-                console.log(data);
+                app.activeRaces = data;
                 for (var i = 0; i < Object.keys(data).length; i ++) {
                     var horses = data[i]['horses'];
                     for (var j = 0; j < Object.keys(horses).length; j ++) {
-                        move(horses[j]['horseId'], horses[j]['horseMaxSpeed'], horses[j]['horseReducedSpeed'], horses[j]['horseEndurance'], horses[j]['horseCurrentLength'], data[i]['currentTime'], horses[j]['horseFinalTime']);
+                        app.move(horses[j], data[i]);
                     }
                 }
             },
@@ -98,31 +102,32 @@
         });
     }
     
-    function move(id, maxSpeed, reducedSpeed, endurance, currentLength, currentTime, finalTime) {
-        var elem = document.getElementById("myBar" + id);
-        var distanceTd = document.getElementById("dist" + id);
-        var timeTd = document.getElementById("time" + id);
+    app.move = function (horse, race) {
+        var elem = document.getElementById("myBar" + horse['horseId']);
+        var distanceTd = document.getElementById("dist" + horse['horseId']);
+        var timeTd = document.getElementById("time" + horse['horseId']);
+        var positionTd = document.getElementById("pos" + horse['horseId']);
         if (elem == null || distanceTd == null || timeTd == null) {
             return false;
         }
-        var width = currentLength / 15;
-        var time = currentTime;
+        var width = horse['horseCurrentLength'] / 15;
+        var time = race['currentTime'];
         if (width >= 100) {
             width = 100;
-            time = finalTime;
+            time = horse['horseFinalTime'];
         }
         var id = setInterval(frame, 1000);
         var length = 100 / 1500;
         function frame() {
-            if (width <= 100*endurance/15) {
-                width = width + maxSpeed * length; 
+            if (width <= 100 * horse['horseEndurance'] / 15) {
+                width = width + horse['horseMaxSpeed'] * length; 
                 time++;
                 elem.style.width = width + '%'; 
                 distanceTd.innerText = parseInt(width * 15);
             } else if (width < 100) {
-                width = width + reducedSpeed * length; 
+                width = width + horse['horseReducedSpeed'] * length; 
                 if (width > 100) {
-                    time = time + (reducedSpeed * length - (width - 100)) / reducedSpeed * length;
+                    time = time + (horse['horseReducedSpeed'] * length - (width - 100)) / horse['horseReducedSpeed'] * length;
                     width = 100;
                 } else {
                     time++;
@@ -130,9 +135,15 @@
                 elem.style.width = width + '%'; 
                 distanceTd.innerText = parseInt(width * 15);
             } else {
-                timeTd.innerHTML = parseFloat(finalTime).toFixed(2);
+                timeTd.innerHTML = parseFloat(horse['horseFinalTime']).toFixed(2);
                 distanceTd.innerText = parseInt(1500);
                 elem.style.width = '100%';
+                positionTd.innerText = horse['horsePosition'];
+                if (horse['horsePosition'] == Object.keys(race['horses']).length) {
+                    app.getActiveRaces();
+                    app.getLastRacesResults();
+                    app.getBestResult();
+                }
                 clearInterval(id);
                 return false;
             }
@@ -140,7 +151,7 @@
 
     }
     
-    function getLastRacesResults() {
+    app.getLastRacesResults = function () {
         $.ajax({
             type: "GET",
             url: "{{route('front.race.getlastresultshtml')}}",
@@ -154,7 +165,7 @@
         });
     }
     
-    function getBestResult() {
+    app.getBestResult = function() {
         $.ajax({
             type: "GET",
             url: "{{route('front.race.getbestresulthtml')}}",
@@ -168,8 +179,14 @@
         });
     }
     
-    getActiveRaces();
+    app.init = function () {
+        app.bindEvents();
+        app.getActiveRaces();
+        app.getLastRacesResults();
+    };
+
+    $(app.init);
     
-    getLastRacesResults()
+    
 </script>
 @endpush

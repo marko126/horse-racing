@@ -91,9 +91,11 @@ table .actions {
 .race table .horse-name, 
 .race table .horse-dist, 
 .race table .horse-time,
+.race table .horse-pos,
 .last-race table .horse-name, 
 .last-race table .horse-dist, 
-.last-race table .horse-time {
+.last-race table .horse-time,
+.last-race table .horse-pos{
     width: 100px;
     text-align: left;
 }

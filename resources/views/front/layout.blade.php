@@ -45,7 +45,7 @@
 		@yield('content')
 		
 		<!-- ======== @Region: #footer ======== -->
-		@include('front.footer')
+		
 		<!--Scripts -->
 		<script src="{{url('/public/skins/front/js/jquery.js')}}"></script>
 		<!-- Bootstrap Javascript -->

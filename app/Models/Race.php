@@ -48,4 +48,17 @@ class Race extends Model
             </div>
         ';
     }
+    
+    /**
+     * @return array
+     */
+    public function getPositions() {
+        
+        $horces = $this->horses()->orderBy('horse_races.time')
+                ->pluck('horses.id')
+                ->toArray();
+        
+        return array_flip($horces);
+        
+    }
 }

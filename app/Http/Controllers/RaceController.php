@@ -74,20 +74,22 @@ class RaceController extends Controller {
 
         foreach ($activeRaces as $key => $race) {
             $data[$key] = [
-                'raceId' => $race->id,
-                'length' => $race->length,
-                'currentTime' => $race->getCurrentTime(),
-                'horses' => []
+                'raceId'        => $race->id,
+                'length'        => $race->length,
+                'currentTime'   => $race->getCurrentTime(),
+                'horses'        => []
             ];
+            $positions = $race->getPositions();
             foreach ($race->horses as $horse) {
                 $data[$key]['horses'][] = [
-                    'horseId' => $horse->id,
-                    'horseName' => $horse->name,
-                    'horseMaxSpeed' => $horse->getMaxSpeed(),
-                    'horseReducedSpeed' => $horse->getReducedSpeed(),
-                    'horseEndurance' => $horse->endurance,
-                    'horseCurrentLength' => $horse->getCurrentLength($race->getCurrentTime(), $race->length),
-                    'horseFinalTime' => $horse->getTime()
+                    'horseId'               => $horse->id,
+                    'horseName'             => $horse->name,
+                    'horseMaxSpeed'         => $horse->getMaxSpeed(),
+                    'horseReducedSpeed'     => $horse->getReducedSpeed(),
+                    'horseEndurance'        => number_format($horse->endurance, 1),
+                    'horseCurrentLength'    => $horse->getCurrentLength($race->getCurrentTime(), $race->length),
+                    'horseFinalTime'        => $horse->getTime(),
+                    'horsePosition'         => $positions[$horse->id] + 1
                 ];
             }
         }
@@ -118,6 +120,7 @@ class RaceController extends Controller {
                                     <th class="horse-name">Horse</th>
                                     <th class="horse-dist">Distance (m)</th>
                                     <th class="horse-time">Time (s)</th>
+                                    <th class="horse-pos">Position</th>
                                     <th class="horse-progress">Progress</th>
                                 </tr>
                             </thead>
@@ -128,6 +131,7 @@ class RaceController extends Controller {
                                         <td><?= $horse->name ?></td>
                                         <td id="dist<?= $horse->id ?>"><?= (int) $horse->getCurrentLength($race->getCurrentTime(), $race->length) ?></td>
                                         <td id="time<?= $horse->id ?>"><?= ($horse->getCurrentLength($race->getCurrentTime(), $race->length) / $race->length) >= 1 ? number_format($horse->getTime(), 2) : '' ?></td>
+                                        <td id="pos<?= $horse->id ?>"><?= ($horse->getCurrentLength($race->getCurrentTime(), $race->length) / $race->length) >= 1 ? $race->getPositions()[$horse->id] : '' ?></td>
                                         <td>
                                             <div id="myProgress<?= $key + 1 ?>" class="myProgress">
                                                 <div id="myBar<?= $horse->id ?>" 
@@ -154,7 +158,7 @@ class RaceController extends Controller {
 
     public function getLastResultsHtml(int $number = 5) {
         $races = Race::where('ended_at', '<', date('Y-m-d H:i:s', strtotime('now')))
-                ->orderBy('ended_at')
+                ->orderBy('ended_at', 'desc')
                 ->limit($number)
                 ->get();
 
